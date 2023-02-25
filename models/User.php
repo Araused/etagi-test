@@ -7,6 +7,7 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use yii\helpers\ArrayHelper;
 
 /**
  * User model
@@ -29,6 +30,9 @@ use yii\web\IdentityInterface;
  *
  * @property User $headUser
  * @property User[] $subordinateUsers
+ *
+ * @property string $fullName
+ * @property string $headName
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -40,6 +44,8 @@ class User extends ActiveRecord implements IdentityInterface
 
     const ROLE_ADMIN = 'admin';
     const ROLE_USER = 'user';
+
+    const SCENARIO_CREATE_USER = 'create_user';
 
     public $password;
 
@@ -100,6 +106,7 @@ class User extends ActiveRecord implements IdentityInterface
             ],
 
             [['password'], 'string', 'min' => 6, 'max' => 255],
+            [['password'], 'required', 'on' => self::SCENARIO_CREATE_USER],
 
             [['email'], 'filter', 'filter' => 'trim'],
             [['email'], 'required'],
@@ -131,6 +138,8 @@ class User extends ActiveRecord implements IdentityInterface
             'bio_surname' => 'Фамилия',
             'bio_patronymic' => 'Отчество',
             'head_user_id' => 'Руководитель',
+            'fullName' => 'Имя',
+            'headName' => 'Руководитель',
         ];
     }
 
@@ -281,6 +290,23 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * @return array
+     */
+    public static function getUsersList($id = null)
+    {
+        $query = parent::find()
+            ->select(['id', 'username', 'bio_name', 'bio_surname']);
+
+        if ($id !== null) {
+            $query->andWhere(['<>', 'id', $id]);
+        }
+
+        return ArrayHelper::map($query->all(), 'id', function ($model) {
+            return "{$model->bio_name} {$model->bio_surname} [{$model->username}]";
+        });
+    }
+
+    /**
      * @inheritdoc
      */
     public function getAuthKey()
@@ -346,7 +372,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getHeadUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'userId']);
+        return $this->hasOne(User::className(), ['id' => 'head_user_id']);
     }
 
     /**
@@ -354,6 +380,17 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getSubordinateUsers()
     {
-        return $this->hasMany(User::className(), ['categoryId' => 'id']);
+        return $this->hasMany(User::className(), ['head_user_id' => 'id']);
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullName()
+    {
+        return implode(' ', [
+            $this->bio_surname,
+            $this->bio_name,
+        ]);
     }
 }

@@ -44,7 +44,7 @@ $isAdmin = Yii::$app->user->identity->role == User::ROLE_ADMIN;
         'items' => [
             ['label' => 'Главная', 'url' => ['/site/index']],
             ['label' => 'Пользователи', 'url' => ['/user/index'], 'visible' => $isAdmin],
-            ['label' => 'Задачи', 'url' => ['/user/index']],
+            ['label' => 'Задачи', 'url' => ['/task/index']],
             '<li class="nav-item">'
             . Html::beginForm(['/site/logout'])
             . Html::submitButton(

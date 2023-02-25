@@ -4,9 +4,9 @@
 /* @var $content string */
 
 use yii\helpers\Html;
-use app\assets\LoginAsset;
+use app\assets\AppAsset;
 
-LoginAsset::register($this);
+AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

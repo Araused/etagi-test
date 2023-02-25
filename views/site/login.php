@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="site-login">
     <div class="row">
         <div class="col-md-4 offset-md-4">
-            <h1 class="mt-5">Авторизация</h1>
+            <h1 class="mt-5 mb-3">Авторизация</h1>
 
             <?php $form = ActiveForm::begin([
                 'id' => 'login-form',
@@ -25,14 +25,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?= $form->field($model, 'rememberMe')->checkbox() ?>
 
-            <div class="form-group">
-                <div class="col-lg-11">
-                    <?= Html::submitButton('Войти', [
-                        'class' => 'btn btn-primary',
-                        'name' => 'login-button',
-                    ]) ?>
-                </div>
-            </div>
+            <?= Html::submitButton('Войти', [
+                'class' => 'btn btn-primary w-100 mt-3',
+                'name' => 'login-button',
+            ]) ?>
 
             <?php ActiveForm::end(); ?>
         </div>
