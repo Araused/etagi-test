@@ -6,7 +6,13 @@ $db = require __DIR__ . '/db.php';
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => [
+        'log',
+        function () {
+            //Глобальные настройки для виджетов
+            require(__DIR__ . '/container.php');
+        },
+    ],
     'language' => 'ru-RU',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',

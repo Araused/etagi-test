@@ -33,6 +33,8 @@ use yii\helpers\ArrayHelper;
  *
  * @property string $fullName
  * @property string $headName
+ *
+ * @property array $userPerformers
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -302,7 +304,7 @@ class User extends ActiveRecord implements IdentityInterface
         }
 
         return ArrayHelper::map($query->all(), 'id', function ($model) {
-            return "{$model->bio_name} {$model->bio_surname} [{$model->username}]";
+            return "{$model->bio_surname} {$model->bio_name} [{$model->username}]";
         });
     }
 
@@ -381,6 +383,14 @@ class User extends ActiveRecord implements IdentityInterface
     public function getSubordinateUsers()
     {
         return $this->hasMany(User::className(), ['head_user_id' => 'id']);
+    }
+
+    /**
+     * @return array
+     */
+    public function getUserPerformers()
+    {
+        return ArrayHelper::map($this->subordinateUsers, 'id', 'fullName');
     }
 
     /**

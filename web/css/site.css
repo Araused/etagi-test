@@ -82,3 +82,13 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+.disabled-action {
+    color: var(--bs-btn-disabled-color);
+    pointer-events: none;
+    opacity: .65;
+}
+
+.text-green {
+    color: rgb(20, 183, 107);
+}

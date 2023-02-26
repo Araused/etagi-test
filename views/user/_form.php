@@ -7,6 +7,8 @@ use app\models\User;
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
 /* @var $form yii\widgets\ActiveForm */
+
+$id = $model->isNewRecord ? null : $model->id;
 ?>
 
 <div class="user-form">
@@ -37,7 +39,7 @@ use app\models\User;
 
             <?= $form->field($model, 'bio_patronymic')->textInput(['maxlength' => true]) ?>
 
-            <?= $form->field($model, 'head_user_id')->dropDownList(User::getUsersList(), ['prompt' => '- Нет -']) ?>
+            <?= $form->field($model, 'head_user_id')->dropDownList(User::getUsersList($id), ['prompt' => '- Нет -']) ?>
         </div>
     </div>
 
